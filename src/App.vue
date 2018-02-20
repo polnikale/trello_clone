@@ -1,71 +1,53 @@
 <template>
   <v-app>
     <v-navigation-drawer
-      persistent
-      :mini-variant="miniVariant"
-      :clipped="clipped"
-      v-model="drawer"
-      enable-resize-watcher
       fixed
+      class="primary"
+      dark
+      temporary
+      :clipped="$vuetify.breakpoint.mdAndUp"
       app
-    >
-      <v-list>
-        <v-list-tile
-          value="true"
-          v-for="(item, i) in items"
-          :key="i"
-        >
-          <v-list-tile-action>
-            <v-icon v-html="item.icon"></v-icon>
+      v-model="showToolbar">
+      <v-list dense>
+        <v-subheader inset class="subheading">Welcome to my app!</v-subheader>
+        <v-divider></v-divider>
+        <v-list-tile class="title" v-for="item in items" :key="item.name" :to="item.link">
+          <v-list-tile-action class="mr-2">
+            <v-icon>{{item.icon}}</v-icon>
           </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title v-text="item.title"></v-list-tile-title>
-          </v-list-tile-content>
+          <v-list-tile-content>{{item.name}}</v-list-tile-content>
         </v-list-tile>
       </v-list>
     </v-navigation-drawer>
     <v-toolbar
+      class="primary darken-2"
+      dark
       app
-      :clipped-left="clipped"
-    >
-      <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-      <v-btn icon @click.stop="miniVariant = !miniVariant">
-        <v-icon v-html="miniVariant ? 'chevron_right' : 'chevron_left'"></v-icon>
-      </v-btn>
-      <v-btn icon @click.stop="clipped = !clipped">
-        <v-icon>web</v-icon>
-      </v-btn>
-      <v-btn icon @click.stop="fixed = !fixed">
-        <v-icon>remove</v-icon>
-      </v-btn>
-      <v-toolbar-title v-text="title"></v-toolbar-title>
+      :clipped-left="$vuetify.breakpoint.mdAndUp"
+      fixed>
+      <v-toolbar-title class="ml-0 pl-3">
+        <v-toolbar-side-icon @click.stop="showToolbar = !showToolbar" class="hidden-sm-and-up"></v-toolbar-side-icon>
+        <router-link tag="span" to="/" style="cursor: pointer">
+          Trello CLONE!
+        </router-link>
+      </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn icon @click.stop="rightDrawer = !rightDrawer">
-        <v-icon>menu</v-icon>
-      </v-btn>
+      <v-toolbar-items class="hidden-xs-only">
+        <v-btn 
+          v-for="item in items" 
+          :key="item.name"
+          flat
+          :to="item.link">
+          <v-icon left>{{item.icon}}</v-icon>
+          {{item.name}}
+        </v-btn>
+      </v-toolbar-items>
     </v-toolbar>
     <v-content>
-      <router-view/>
+      <v-container fluid>
+        <router-view></router-view>
+      </v-container>
     </v-content>
-    <v-navigation-drawer
-      temporary
-      :right="right"
-      v-model="rightDrawer"
-      fixed
-      app
-    >
-      <v-list>
-        <v-list-tile @click="right = !right">
-          <v-list-tile-action>
-            <v-icon>compare_arrows</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-title>Switch drawer (click me)</v-list-tile-title>
-        </v-list-tile>
-      </v-list>
-    </v-navigation-drawer>
-    <v-footer :fixed="fixed" app>
-      <span>&copy; 2017</span>
-    </v-footer>
   </v-app>
 </template>
 
@@ -73,19 +55,22 @@
 export default {
   data() {
     return {
-      clipped: false,
-      drawer: true,
-      fixed: false,
-      items: [{
-        icon: 'bubble_chart',
-        title: 'Inspire',
-      }],
-      miniVariant: false,
-      right: true,
-      rightDrawer: false,
-      title: 'Vuetify.js',
+      items: [
+        { icon: 'lock_open', name: 'Sign in', link: '/signin' },
+        { icon: 'exit_to_app', name: 'Sign up', link: '/signup' },
+        { icon: 'dashboard', name: 'New Deck', link: '/deck' },
+        { icon: 'account_box', name: 'Profile', link: '/profile' },
+      ],
+      showToolbar: false,
     };
   },
   name: 'App',
 };
 </script>
+
+<style scoped>
+v-list {
+  font-size: 2em;
+}
+</style>
+

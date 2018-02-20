@@ -1,0 +1,36 @@
+<template>
+  <v-container>
+    <v-layout row>
+      <v-flex xs12 sm6 offset-sm3 class="primary">
+        <v-card class="pa-4">
+          <v-card-media class="mb-5" src="https://wac-cdn.atlassian.com/dam/jcr:d6a89d75-bad0-46f3-88aa-406542eb6cb5/trello-logo-blue-flat.png?cdnVersion=jp" height="220px"></v-card-media>
+          <v-card-title class="primary--text">
+            <h1 class="mx-auto mb-3" >Welcome to my amazing Trello clone!</h1>
+            <h3>I've worked really alot on this. I really hope you like it. To begin using my app, click the button below!</h3>
+          </v-card-title>
+          <v-card-actions>
+            <v-btn v-if="userIsAuthorized" to="/deck" class="primary">Go to decks!</v-btn>
+            <v-container v-else>
+              <v-layout row justify-center>
+                <v-flex>
+                  <v-btn to="/signin" class="primary">Signin</v-btn>
+                  <v-btn to="/signup" class="primary">Sign Up!</v-btn>
+                </v-flex>
+              </v-layout>
+            </v-container>
+          </v-card-actions>
+        </v-card>
+      </v-flex>
+    </v-layout>
+  </v-container>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      userIsAuthorized: false,
+    };
+  },
+};
+</script>
