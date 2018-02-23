@@ -44,9 +44,7 @@
       </v-toolbar-items>
     </v-toolbar>
     <v-content>
-      <v-container fluid>
-        <router-view></router-view>
-      </v-container>
+      <router-view></router-view>
     </v-content>
   </v-app>
 </template>
@@ -58,7 +56,7 @@ export default {
       items: [
         { icon: 'lock_open', name: 'Sign in', link: '/signin' },
         { icon: 'exit_to_app', name: 'Sign up', link: '/signup' },
-        { icon: 'dashboard', name: 'New Deck', link: '/deck' },
+        { icon: 'dashboard', name: 'Decks', link: '/decks' },
         { icon: 'account_box', name: 'Profile', link: '/profile' },
       ],
       showToolbar: false,

@@ -4,6 +4,7 @@ import Home from '@/components/Home';
 import Profile from '@/components/User/Profile';
 import Signin from '@/components/User/Signin';
 import Signup from '@/components/User/Signup';
+import Decks from '@/components/Decks/Decks';
 
 Vue.use(Router);
 
@@ -28,6 +29,11 @@ export default new Router({
       path: '/signup',
       name: 'Signup',
       component: Signup,
+    },
+    {
+      path: '/decks',
+      name: 'Decks',
+      component: Decks,
     },
   ],
 });

@@ -11,8 +11,8 @@
           <v-card-actions>
             <v-btn v-if="userIsAuthorized" to="/deck" class="primary">Go to decks!</v-btn>
             <v-container v-else>
-              <v-layout row justify-center>
-                <v-flex>
+              <v-layout row >
+                <v-flex style="text-align: center">
                   <v-btn to="/signin" class="primary">Signin</v-btn>
                   <v-btn to="/signup" class="primary">Sign Up!</v-btn>
                 </v-flex>
