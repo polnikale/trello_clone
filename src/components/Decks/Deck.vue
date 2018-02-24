@@ -12,22 +12,14 @@
                 <v-card-title style="font-weight: 600">
                   {{list.name}}
                 </v-card-title>
-                  <v-container fluid class="pa-2"> 
-                    <v-layout row v-for="card in list.cards" :key="card.name" >
-                      <v-flex xs12>
-                        <div class="card-in-list">
-                          <span class="card-title">
-                            <span>{{card.name}}</span>
-                            <v-icon @click="openRenameCard" style="font-size: 14px">create</v-icon>
-                          </span>
-                          <v-text-field style="display: none" v-model="card.name"></v-text-field>
-                          <v-spacer></v-spacer>
-                          <span v-show="card.expires">{{card.expires}}</span>
-                        </div>
-                      </v-flex>
-                    </v-layout>
-                  </v-container>
-                </v-card-title>
+                <v-container fluid class="pa-2"> 
+                  <v-layout row v-for="card in list.cards" :key="card.name" >
+                    <v-flex xs12>
+                      <new-card :name="card.name" :expires="card.expires" :showInputToRename="card.showInputToRename"></new-card> 
+                      <!-- VERY IMPORTANT THING! WE ACTUALLY NEED TO SEPERATE IT TO IT'S OWN COMPONENT TO CREATE OWN SCOPE WITH CARD.PROPERTIES. IN OTHER CASE IT BLOCKS INPUT PRETTY MUCH! -->
+                    </v-flex>
+                  </v-layout>
+                </v-container>
               </v-card>
             </v-flex>
           </v-layout>
@@ -49,17 +41,17 @@ export default {
         {
           name: 'second list!',
           cards: [
-            { name: 'do first', expires: '24.02.2018' },
-            { name: 'do second', expires: '25.02.2018' },
-            { name: 'do third', expires: '28.02.2018' },
+            { name: 'do first', expires: '24.02.2018', showInputToRename: false },
+            { name: 'do second', expires: '25.02.2018', showInputToRename: false },
+            { name: 'do third', expires: '28.02.2018', showInputToRename: false },
           ],
         },
         {
           name: 'second list!',
           cards: [
-            { name: 'complete first', expires: '24.02.2018' },
-            { name: 'complete second', expires: '25.02.2018' },
-            { name: 'complete third', expires: '28.02.2018' },
+            { name: 'complete first', expires: '24.02.2018', showInputToRename: false },
+            { name: 'complete second', expires: '25.02.2018', showInputToRename: false },
+            { name: 'complete third', expires: '28.02.2018', showInputToRename: false },
           ],
         },
       ],
@@ -77,34 +69,11 @@ export default {
       }
       return found;
     },
-    openRenameCard(event) {
-      const target = event.target;
-      console.log(target.previousElementSibling);
-      target.style.display = 'none';
-      target.previousElementSibling.style.display = 'none';
-      target.parentNode.nextElementSibling.style.display = 'block'; // show input
+    openRenameCard(card) {
+      const currCard = card;
+      currCard.showInputToRename = true;
     },
   },
 };
 </script>
-
-<style scoped>
-.card-in-list {
-  border-radius: 5px;
-  padding: 6px;
-  background-color: #fff;
-  margin-bottom: 10px;
-  transition: all 0.3s;
-  cursor: pointer;
-}
-
-.card-title {
-  display: flex;
-  justify-content: space-between;
-}
-
-.card-in-list:hover {
-  background-color: rgba(201, 200, 200, 0.65);
-}
-</style>
 

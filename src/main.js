@@ -3,6 +3,7 @@ import Vuetify from 'vuetify';
 import Vue from 'vue';
 import App from './App';
 import router from './router';
+import newCard from './components/Decks/Card';
 
 
 Vue.use(Vuetify, {
@@ -16,6 +17,8 @@ Vue.use(Vuetify, {
     warning: '#FFC107',
   },
 });
+
+Vue.component('new-card', newCard);
 
 Vue.config.productionTip = false;
 
