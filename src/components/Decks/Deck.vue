@@ -7,19 +7,23 @@
             <h2 style="color: #fff" class="mb-1">{{name}} | {{group}} | {{type}}</h2>
           </v-layout>
           <v-layout row>
-            <v-flex xs2 v-for="(list,index) in lists" :key="index" round>
-              <v-card light style="min-height: 90px; width: 90%;">
-                <v-card-title>
+            <v-flex xs2 v-for="(list,index) in lists" :key="index">
+              <v-card light style="min-height: 90px; width: 90%;background-color:rgba(220, 220, 220, .9)" round>
+                <v-card-title style="font-weight: 600">
                   {{list.name}}
-                  <v-container fluid class="pa-0"> 
+                </v-card-title>
+                  <v-container fluid class="pa-2"> 
                     <v-layout row v-for="card in list.cards" :key="card.name" >
                       <v-flex xs12>
-                        <v-btn style="width: 99%" class="caption">
-                          <span>{{card.name}}</span>
+                        <div class="card-in-list">
+                          <span class="card-title">
+                            <span>{{card.name}}</span>
+                            <v-icon @click="openRenameCard" style="font-size: 14px">create</v-icon>
+                          </span>
                           <v-text-field style="display: none" v-model="card.name"></v-text-field>
                           <v-spacer></v-spacer>
                           <span v-show="card.expires">{{card.expires}}</span>
-                        </v-btn>
+                        </div>
                       </v-flex>
                     </v-layout>
                   </v-container>
@@ -75,11 +79,32 @@ export default {
     },
     openRenameCard(event) {
       const target = event.target;
-      console.log(target);
+      console.log(target.previousElementSibling);
       target.style.display = 'none';
-      target.nextElementSibling.style.display = 'block'; // show input
+      target.previousElementSibling.style.display = 'none';
+      target.parentNode.nextElementSibling.style.display = 'block'; // show input
     },
   },
 };
 </script>
+
+<style scoped>
+.card-in-list {
+  border-radius: 5px;
+  padding: 6px;
+  background-color: #fff;
+  margin-bottom: 10px;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.card-title {
+  display: flex;
+  justify-content: space-between;
+}
+
+.card-in-list:hover {
+  background-color: rgba(201, 200, 200, 0.65);
+}
+</style>
 
