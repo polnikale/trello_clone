@@ -15,7 +15,7 @@
                 <v-container fluid class="pa-2"> 
                   <v-layout row v-for="card in list.cards" :key="card.name" >
                     <v-flex xs12>
-                      <new-card :name="card.name" :expires="card.expires" :showInputToRename="card.showInputToRename"></new-card> 
+                      <new-card :card="card"></new-card> 
                       <!-- VERY IMPORTANT THING! WE ACTUALLY NEED TO SEPERATE IT TO IT'S OWN COMPONENT TO CREATE OWN SCOPE WITH CARD.PROPERTIES. IN OTHER CASE IT BLOCKS INPUT PRETTY MUCH! -->
                     </v-flex>
                   </v-layout>
@@ -41,17 +41,17 @@ export default {
         {
           name: 'second list!',
           cards: [
-            { name: 'do first', expires: '24.02.2018', showInputToRename: false },
-            { name: 'do second', expires: '25.02.2018', showInputToRename: false },
-            { name: 'do third', expires: '28.02.2018', showInputToRename: false },
+            { name: 'do first', expires: '2018-02-18', showInputToRename: false },
+            { name: 'do second', expires: '2018-02-24', showInputToRename: false },
+            { name: 'do third', expires: '2018-02-27', showInputToRename: false },
           ],
         },
         {
           name: 'second list!',
           cards: [
-            { name: 'complete first', expires: '24.02.2018', showInputToRename: false },
-            { name: 'complete second', expires: '25.02.2018', showInputToRename: false },
-            { name: 'complete third', expires: '28.02.2018', showInputToRename: false },
+            { name: 'complete first', expires: '2018-02-12', showInputToRename: false },
+            { name: 'complete second', expires: '2018-02-21', showInputToRename: false },
+            { name: 'complete third', expires: '2018-02-28', showInputToRename: false },
           ],
         },
       ],

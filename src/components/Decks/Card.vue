@@ -2,29 +2,42 @@
   <div class="card-in-list">
     <span class="card-title" v-if="!cardShowInputToRename">
       <span>{{cardName}}</span>
-      <v-icon @click="toggleRenameCard" style="font-size: 14px" hint="change name">create</v-icon>
+      <v-icon @click="showRenameCard" style="font-size: 14px" hint="change name">create</v-icon>
     </span>
-    <form v-else @submit.prevent="toggleRenameCard">
+    <form v-else @submit.prevent="closeRenameCard">
       <v-text-field name="input" label="Label Text" v-model="cardName" class="input-group--focused"></v-text-field>
       <v-btn class="success" type="submit" dark>Change!</v-btn>
     </form>
-    <span v-show="cardExpires">{{cardExpires}}</span>
+    <span v-show="cardExpires" :style="{color: showGreenOrRed}">{{cardExpires}}</span>
   </div>
 </template>
 
 <script>
 export default {
-  props: ['name', 'expires', 'showInputToRename'],
+  props: ['card'],
   data() {
     return {
-      cardName: this.name,
-      cardExpires: this.expires,
-      cardShowInputToRename: this.showInputToRename,
+      cardName: this.card.name,
+      cardExpires: this.card.expires,
+      cardShowInputToRename: this.card.showInputToRename,
     };
   },
   methods: {
-    toggleRenameCard() {
-      this.cardShowInputToRename = !this.cardShowInputToRename;
+    showRenameCard() {
+      this.cardShowInputToRename = true;
+    },
+    closeRenameCard() {
+      this.cardShowInputToRename = false;
+      // change data in vuex and firebase
+    },
+  },
+  computed: {
+    showGreenOrRed() {
+      console.log(new Date() - new Date(this.cardExpires));
+      if (new Date() - new Date(this.cardExpires) < 0) {
+        return 'green';
+      }
+      return 'red';
     },
   },
 };
@@ -47,6 +60,13 @@ export default {
 
 .card-in-list:hover {
   background-color: rgba(201, 200, 200, 0.65);
+}
+
+span.green {
+  background-color: green;
+}
+span.red {
+  background-color: red;
 }
 </style>
 
