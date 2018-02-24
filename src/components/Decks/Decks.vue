@@ -6,7 +6,7 @@
         <v-container>
           <v-layout row justify-start wrap>
             <v-flex xl3 lg4 sm6 xs12 v-for="deck in decks" :key="deck.id"  v-if="isInTheGroup(deck,group)">
-              <v-btn class="primary mb-2 pa-2 ml-2 mr-2" :to="'./deck/'+deck.id" dark style="min-height: 90px; width: 90%;">
+              <v-btn class="primary mb-2 pa-2" :to="'./deck/'+deck.id" dark style="min-height: 90px; width: 90%;">
                 {{deck.name}}
               </v-btn>
             </v-flex>

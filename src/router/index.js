@@ -5,6 +5,7 @@ import Profile from '@/components/User/Profile';
 import Signin from '@/components/User/Signin';
 import Signup from '@/components/User/Signup';
 import Decks from '@/components/Decks/Decks';
+import Deck from '@/components/Decks/Deck';
 
 Vue.use(Router);
 
@@ -34,6 +35,12 @@ export default new Router({
       path: '/decks',
       name: 'Decks',
       component: Decks,
+    },
+    {
+      path: '/deck/:id',
+      name: 'Deck',
+      component: Deck,
+      props: true,
     },
   ],
 });
