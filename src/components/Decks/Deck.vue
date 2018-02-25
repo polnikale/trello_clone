@@ -7,21 +7,19 @@
             <h2 style="color: #fff" class="mb-1">{{name}} | {{group}} | {{type}}</h2>
           </v-layout>
           <v-layout row>
-            <v-flex xs2 v-for="(list,index) in lists" :key="index">
+            <div style="width: 280px" v-for="(list,index) in lists" :key="index">
               <v-card light style="min-height: 90px; width: 90%;background-color:rgba(220, 220, 220, .9)" round>
                 <v-card-title style="font-weight: 600">
                   {{list.name}}
                 </v-card-title>
                 <v-container fluid class="pa-2"> 
                   <v-layout row v-for="card in list.cards" :key="card.name" >
-                    <v-flex xs12>
-                      <new-card :card="card"></new-card> 
-                      <!-- VERY IMPORTANT THING! WE ACTUALLY NEED TO SEPERATE IT TO IT'S OWN COMPONENT TO CREATE OWN SCOPE WITH CARD.PROPERTIES. IN OTHER CASE IT BLOCKS INPUT PRETTY MUCH! -->
-                    </v-flex>
+                    <new-card :card="card"></new-card> 
+                    <!-- VERY IMPORTANT THING! WE ACTUALLY NEED TO SEPERATE IT TO IT'S OWN COMPONENT TO CREATE OWN SCOPE WITH CARD.PROPERTIES. IN OTHER CASE IT BLOCKS INPUT PRETTY MUCH! -->     
                   </v-layout>
                 </v-container>
               </v-card>
-            </v-flex>
+            </div>
           </v-layout>
         </v-container>
       </v-flex>
