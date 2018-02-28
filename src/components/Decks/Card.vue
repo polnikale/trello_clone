@@ -1,24 +1,28 @@
 <template>
   <v-flex xs12>
-    <div class="card-in-list">
-      <span class="card-title" v-if="!cardShowInputToRename">
+    <div class="card-in-list" v-if="!cardShowInputToRename">
+      <span class="card-title">
         <span>{{cardName}}</span>
-        <v-icon @click="showRenameCard" style="font-size: 14px" hint="change name">create</v-icon>
+        <v-icon style="font-size: 14px" @click="showRenameCard">create</v-icon>
       </span>
-      <form v-else @submit.prevent="confirmRenameCard">
-        <v-text-field name="input" label="Label Text" v-model="cardName" class="input-group--focused"></v-text-field>
-        <v-btn class="success" type="submit" dark>Change!</v-btn>
-        <v-btn class="error" type="cancel" @click="closeRenameCard" dark>Cancel!</v-btn>
-      </form>
       <span v-show="cardExpires" :style="{color: showGreenOrRed}">{{cardExpires}}</span>
     </div>
+    <form v-else @submit.prevent="confirmRenameCard">
+      <h3>Change your name!</h3>
+      <v-text-field v-model="cardName" required></v-text-field>
+      <div v-show="cardExpires">
+        <h3>Change your date!</h3>
+        <v-date-picker v-model="cardExpires" :reactive="true" style="width: 100%"></v-date-picker>
+      </div>
+      <v-btn type="submit" class="success">Change!</v-btn>
+    </form>
   </v-flex>
   
 </template>
 
 <script>
 export default {
-  props: ['card'],
+  props: ['card', 'deck'],
   data() {
     return {
       cardName: this.card.name,
@@ -31,17 +35,17 @@ export default {
       this.cardShowInputToRename = true;
     },
     confirmRenameCard() {
+      this.$store.dispatch('updateCard', {
+        name: this.cardName,
+        expires: this.cardExpires,
+        card: this.card,
+        deck: this.deck,
+      });
       this.cardShowInputToRename = false;
-      // change data in vuex and firebase
-    },
-    closeRenameCard() {
-      this.cardShowInputToRename = false;
-      // get data from vuex
     },
   },
   computed: {
     showGreenOrRed() {
-      console.log(new Date() - new Date(this.cardExpires));
       if (new Date() - new Date(this.cardExpires) < 0) {
         return 'green';
       }

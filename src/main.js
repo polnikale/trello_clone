@@ -1,6 +1,7 @@
 import 'vuetify/dist/vuetify.min.css';
 import Vuetify from 'vuetify';
 import Vue from 'vue';
+import store from './store/index';
 import App from './App';
 import router from './router';
 import newCard from './components/Decks/Card';
@@ -26,5 +27,6 @@ Vue.config.productionTip = false;
 new Vue({
   el: '#app',
   router,
+  store,
   render: h => h(App),
 });

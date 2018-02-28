@@ -120,6 +120,9 @@ export default {
       return true;
     },
   },
+  created() {
+    this.decks = this.$store.getters.getDecks;
+  },
 };
 </script>
 

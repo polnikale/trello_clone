@@ -4,23 +4,23 @@
       <v-flex xs12>
         <v-container>
           <v-layout row>
-            <h2 style="color: #fff" class="mb-1">{{name}} | {{group}} | {{type}}</h2>
+            <h2 style="color: #fff" class="mb-1">{{deck.name}} |<span v-for="group in deck.groupName" :key="group"> {{group}} |</span> {{deck.type}}</h2>
           </v-layout>
-          <v-layout row>
-            <div style="width: 280px" v-for="(list,index) in lists" :key="index">
-              <v-card light style="min-height: 90px; width: 90%;background-color:rgba(220, 220, 220, .9)" round>
-                <v-card-title style="font-weight: 600">
-                  {{list.name}}
-                </v-card-title>
-                <v-container fluid class="pa-2"> 
-                  <v-layout row v-for="card in list.cards" :key="card.name" >
-                    <new-card :card="card"></new-card> 
-                    <!-- VERY IMPORTANT THING! WE ACTUALLY NEED TO SEPERATE IT TO IT'S OWN COMPONENT TO CREATE OWN SCOPE WITH CARD.PROPERTIES. IN OTHER CASE IT BLOCKS INPUT PRETTY MUCH! -->     
-                  </v-layout>
-                </v-container>
-              </v-card>
-            </div>
-          </v-layout>
+            <v-layout row>
+              <div style="width: 320px" v-for="(list,index) in deck.lists" :key="index">
+                <v-card light style="min-height: 90px; width: 90%;background-color:rgba(220, 220, 220, .9)" round>
+                  <v-card-title style="font-weight: 600">
+                    {{list.name}}
+                  </v-card-title>
+                  <v-container fluid class="pa-2"> 
+                    <v-layout row v-for="card in list.cards" :key="card.name" >
+                      <new-card :card="card" :deck="deck"></new-card> 
+                      <!-- VERY IMPORTANT THING! WE ACTUALLY NEED TO SEPERATE IT TO IT'S OWN COMPONENT TO CREATE OWN SCOPE WITH CARD.PROPERTIES. IN OTHER CASE IT BLOCKS INPUT PRETTY MUCH! -->     
+                    </v-layout>
+                  </v-container>
+                </v-card>
+              </div>
+            </v-layout>
         </v-container>
       </v-flex>
     </v-layout>
@@ -32,45 +32,21 @@ export default {
   props: ['id'],
   data() {
     return {
-      name: 'Blabla',
-      group: 'Personal',
-      type: 'Private',
-      lists: [
-        {
-          name: 'second list!',
-          cards: [
-            { name: 'do first', expires: '2018-02-18', showInputToRename: false },
-            { name: 'do second', expires: '2018-02-24', showInputToRename: false },
-            { name: 'do third', expires: '2018-02-27', showInputToRename: false },
-          ],
-        },
-        {
-          name: 'second list!',
-          cards: [
-            { name: 'complete first', expires: '2018-02-12', showInputToRename: false },
-            { name: 'complete second', expires: '2018-02-21', showInputToRename: false },
-            { name: 'complete third', expires: '2018-02-28', showInputToRename: false },
-          ],
-        },
-      ],
+      decks: '',
     };
   },
-  methods: {
-    isInTheGroup(deck, group) {
-      const deckGroups = deck.groupName;
-      let found = false;
-      for (let deckGroupIndex = 0; deckGroupIndex < deckGroups.length; deckGroupIndex += 1) {
-        if (group === deckGroups[deckGroupIndex]) {
-          found = true;
-          break;
+  computed: {
+    deck() {
+      for (let counter = 0; counter < this.decks.length; counter += 1) {
+        if (this.decks[counter].id === this.id) {
+          return this.decks[counter];
         }
       }
-      return found;
+      return false;
     },
-    openRenameCard(card) {
-      const currCard = card;
-      currCard.showInputToRename = true;
-    },
+  },
+  created() {
+    this.decks = this.$store.getters.getDecks;
   },
 };
 </script>
