@@ -129,6 +129,9 @@ export default new Vuex.Store({
         neededCard.expires = data.expires;
       }
     },
+    signUserUp({ commit }, data) {
+      console.log(data);
+    },
   },
   getters: {
     getDecks(state) {
