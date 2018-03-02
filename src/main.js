@@ -1,4 +1,7 @@
 import 'vuetify/dist/vuetify.min.css';
+
+import * as firebase from 'firebase';
+
 import Vuetify from 'vuetify';
 import Vue from 'vue';
 import store from './store/index';
@@ -29,4 +32,15 @@ new Vue({
   router,
   store,
   render: h => h(App),
+  created() {
+    const config = {
+      apiKey: 'AIzaSyBS0E1SCL7fkJZcOqcNemtzm1S6hiZG7MQ',
+      authDomain: 'trelloclone-242f9.firebaseapp.com',
+      databaseURL: 'https://trelloclone-242f9.firebaseio.com',
+      projectId: 'trelloclone-242f9',
+      storageBucket: 'trelloclone-242f9.appspot.com',
+      messagingSenderId: '943119875123',
+    };
+    firebase.initializeApp(config);
+  },
 });

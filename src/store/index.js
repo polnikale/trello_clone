@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
+import * as firebase from 'firebase';
+
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -110,10 +112,10 @@ export default new Vuex.Store({
   },
   mutations: {},
   actions: {
-    updateCard({ commit, getters }, data) {
-      const deck = data.deck;
+    updateCard({ commit, getters }, payload) {
+      const deck = payload.deck;
       const decks = getters.getDecks;
-      const card = data.card;
+      const card = payload.card;
       let neededCard;
       const neededDeckList = decks[decks.indexOf(deck)].lists;
       for (let counter = 0; counter <= neededDeckList.length; counter += 1) {
@@ -129,8 +131,11 @@ export default new Vuex.Store({
         neededCard.expires = data.expires;
       }
     },
-    signUserUp({ commit }, data) {
-      console.log(data);
+    signUserUp({ commit }, payload) {
+      firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
+        .then((hey) => {
+          console.log(hey);
+        });
     },
   },
   getters: {

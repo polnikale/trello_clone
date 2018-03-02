@@ -21,18 +21,6 @@
                 <v-layout row>
                   <v-flex xs12>
                     <v-text-field
-                      name="name"
-                      label="Name"
-                      id="name"
-                      v-model="name"
-                      type="text"
-                      required
-                    ></v-text-field>
-                  </v-flex>
-                </v-layout>
-                <v-layout row>
-                  <v-flex xs12>
-                    <v-text-field
                       name="password"
                       label="Password"
                       id="password"
@@ -50,7 +38,7 @@
                       id="secondPassword"
                       v-model="secondPassword"
                       type="password"
-                      :rules=[comparePasswords]
+                      :rules="[comparePasswords]"
                       required
                     ></v-text-field>
                   </v-flex>
@@ -75,7 +63,6 @@
 export default {
   data() {
     return {
-      name: '',
       email: '',
       password: '',
       secondPassword: '',
@@ -83,12 +70,12 @@ export default {
   },
   computed: {
     comparePasswords() {
-      return this.password === this.secondPassword ? '' : 'Passwords don\'t match';
+      return this.password !== this.secondPassword ? 'Passwords do not match' : true;
     },
   },
   methods: {
     onSignup() {
-      this.$store.dispatch('signUserUp', { email: this.email, name: this.name, password: this.password });
+      this.$store.dispatch('signUserUp', { email: this.email, password: this.password });
     },
   },
 };
