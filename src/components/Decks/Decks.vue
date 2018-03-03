@@ -94,6 +94,9 @@ export default {
       }
       return false;
     },
+    decks() {
+      return this.$store.getters.getDecks;
+    },
   },
   methods: {
     isInTheGroup(deck, group) {
@@ -119,9 +122,6 @@ export default {
       this.openInput = false;
       return true;
     },
-  },
-  created() {
-    this.decks = this.$store.getters.getDecks;
   },
 };
 </script>

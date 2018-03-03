@@ -9,7 +9,7 @@
             <h3>I've worked really alot on this. I really hope you like it. To begin using my app, click the button below!</h3>
           </v-card-title>
           <v-card-actions>
-            <v-btn v-if="userIsAuthorized" to="/deck" class="primary">Go to decks!</v-btn>
+            <v-btn v-if="userIsAuthorized" to="/deck" class="primary ml-auto">Go to decks!</v-btn>
             <v-container v-else>
               <v-layout row >
                 <v-flex style="text-align: center">
@@ -27,10 +27,18 @@
 
 <script>
 export default {
-  data() {
-    return {
-      userIsAuthorized: false,
-    };
+  computed: {
+    userIsAuthorized() {
+      if (this.user !== null && this.user !== undefined) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    user() {
+      return this.$store.getters.getUser;
+    },
   },
+
 };
 </script>

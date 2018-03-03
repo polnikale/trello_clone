@@ -72,10 +72,20 @@ export default {
     comparePasswords() {
       return this.password !== this.secondPassword ? 'Passwords do not match' : true;
     },
+    user() {
+      return this.$store.getters.getUser;
+    }
   },
   methods: {
     onSignup() {
       this.$store.dispatch('signUserUp', { email: this.email, password: this.password });
+    },
+  },
+  watch: {
+    user(value) {
+      if (value !== null && value !== undefined) {
+        this.router.push('/');
+      }
     },
   },
 };

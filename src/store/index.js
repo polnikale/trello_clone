@@ -7,110 +7,13 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    decks: [
-      {
-        name: 'My first trello app!',
-        type: 'Private',
-        description: 'This is just for managing my trello app!',
-        groupName: ['Personal'],
-        id: 'smmeseefsesbb',
-        lists: [
-          {
-            name: 'second list!',
-            cards: [
-              { name: 'do first', expires: '2018-02-18', showInputToRename: false },
-              { name: 'do second', expires: '2018-02-24', showInputToRename: false },
-              { name: 'do third', expires: '2018-02-27', showInputToRename: false },
-            ],
-          },
-          {
-            name: 'second list!',
-            cards: [
-              { name: 'complete first', expires: '2018-02-12', showInputToRename: false },
-              { name: 'complete second', expires: '2018-02-21', showInputToRename: false },
-              { name: 'complete third', expires: '2018-02-28', showInputToRename: false },
-            ],
-          },
-        ],
-      },
-      {
-        name: 'My first trello app!',
-        type: 'Private',
-        description: 'This is just for managing my trello app!',
-        groupName: ['Personal'],
-        id: 'smmesesesbb',
-        lists: [
-          {
-            name: 'second list!',
-            cards: [
-              { name: 'do first', expires: '2018-02-18', showInputToRename: false },
-              { name: 'do second', expires: '2018-02-24', showInputToRename: false },
-              { name: 'do third', expires: '2018-02-27', showInputToRename: false },
-            ],
-          },
-          {
-            name: 'second list!',
-            cards: [
-              { name: 'complete first', expires: '2018-02-12', showInputToRename: false },
-              { name: 'complete second', expires: '2018-02-21', showInputToRename: false },
-              { name: 'complete third', expires: '2018-02-28', showInputToRename: false },
-            ],
-          },
-        ],
-      },
-      {
-        name: 'My app!',
-        type: 'Private',
-        description: 'This is just for managing my trello app!',
-        groupName: ['Personal', 'Favourite'],
-        id: 'smesesesbb',
-        lists: [
-          {
-            name: 'second list!',
-            cards: [
-              { name: 'do first', expires: '2018-02-18', showInputToRename: false },
-              { name: 'do second', expires: '2018-02-24', showInputToRename: false },
-              { name: 'do third', expires: '2018-02-27', showInputToRename: false },
-            ],
-          },
-          {
-            name: 'second list!',
-            cards: [
-              { name: 'complete first', expires: '2018-02-12', showInputToRename: false },
-              { name: 'complete second', expires: '2018-02-21', showInputToRename: false },
-              { name: 'complete third', expires: '2018-02-28', showInputToRename: false },
-            ],
-          },
-        ],
-      },
-      {
-        name: 'My second trello app!',
-        type: 'Private',
-        description: 'This is just for managing my trello app!',
-        groupName: ['Favourite'],
-        id: 'smmejytbngsbb',
-        lists: [
-          {
-            name: 'second list!',
-            cards: [
-              { name: 'do first', expires: '2018-02-18', showInputToRename: false },
-              { name: 'do second', expires: '2018-02-24', showInputToRename: false },
-              { name: 'do third', expires: '2018-02-27', showInputToRename: false },
-            ],
-          },
-          {
-            name: 'second list!',
-            cards: [
-              { name: 'complete first', expires: '2018-02-12', showInputToRename: false },
-              { name: 'complete second', expires: '2018-02-21', showInputToRename: false },
-              { name: 'complete third', expires: '2018-02-28', showInputToRename: false },
-            ],
-          },
-        ],
-      },
-    ],
+    user: null,
   },
-  mutations: {},
+  mutations: {
+    setUser(state, payload) {
+      state.user = payload;
+    },
+  },
   actions: {
     updateCard({ commit, getters }, payload) {
       const deck = payload.deck;
@@ -124,23 +27,44 @@ export default new Vuex.Store({
           break;
         }
       }
-      if (data.name) {
-        neededCard.name = data.name;
+      if (payload.name) {
+        neededCard.name = payload.name;
       }
-      if (data.expires) {
-        neededCard.expires = data.expires;
+      if (payload.expires) {
+        neededCard.expires = payload.expires;
       }
     },
     signUserUp({ commit }, payload) {
       firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
-        .then((hey) => {
-          console.log(hey);
+        .then((user) => {
+          commit('setUser', {
+            id: user.uid,
+            decks: [],
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    signUserIn({ commit }, payload) {
+      firebase.auth().signInWithEmailAndPassword(payload.email, payload.password)
+        .then((user) => {
+          commit('setUser', {
+            id: user.uid,
+            decks: [],
+          });
+        })
+        .catch((error) => {
+          console.log(error);
         });
     },
   },
   getters: {
     getDecks(state) {
-      return state.decks;
+      return state.user.decks;
+    },
+    getUser(state) {
+      return state.user;
     },
   },
 });
