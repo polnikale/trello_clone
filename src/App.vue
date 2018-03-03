@@ -17,7 +17,7 @@
           </v-list-tile-action>
           <v-list-tile-content>{{item.name}}</v-list-tile-content>
         </v-list-tile>
-        <v-list-tile class="title" @click="onLogout">
+        <v-list-tile class="title" @click="onLogout" v-if="userIsAuthenticated">
           <v-list-tile-action class="mr-2">
             <v-icon>exit_to_app</v-icon>
           </v-list-tile-action>
@@ -48,6 +48,7 @@
           {{item.name}}
         </v-btn>
         <v-btn 
+          v-if="userIsAuthenticated"
           flat
           @click="onLogout">
           <v-icon left>exit_to_app</v-icon>
@@ -70,7 +71,7 @@ export default {
     };
   },
   computed: {
-    userIsAuthorized() {
+    userIsAuthenticated() {
       if (this.user !== null && this.user !== undefined) {
         return true;
       }
@@ -84,7 +85,7 @@ export default {
         { icon: 'lock_open', name: 'Sign in', link: '/signin' },
         { icon: 'exit_to_app', name: 'Sign up', link: '/signup' },
       ];
-      if (this.userIsAuthorized) {
+      if (this.userIsAuthenticated) {
         menuItems = [
           { icon: 'dashboard', name: 'Decks', link: '/decks' },
           { icon: 'account_box', name: 'Profile', link: '/profile' },
