@@ -1,5 +1,10 @@
 <template>
   <v-container>
+    <v-layout row v-if="error">
+      <v-flex xs12 sm6 offset-sm3>
+        <my-alert :text="error.message"></my-alert>
+      </v-flex>
+    </v-layout>
     <v-layout row>
       <v-flex xs12 sm6 offset-sm3>
         <v-card>
@@ -32,7 +37,7 @@
                 </v-layout>
                 <v-layout row>
                   <v-flex xs12>
-                    <v-btn type="submit">
+                    <v-btn type="submit" class="success">
                       Sign in
                     </v-btn>
                   </v-flex>
@@ -57,6 +62,9 @@ export default {
   computed: {
     user() {
       return this.$store.getters.getUser;
+    },
+    error() {
+      return this.$store.getters.getError;
     },
   },
   methods: {

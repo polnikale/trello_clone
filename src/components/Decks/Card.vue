@@ -1,5 +1,5 @@
 <template>
-  <v-flex xs12>
+  <v-flex xs12 sm6 offset-sm3>
     <div class="card-in-list" v-if="!cardShowInputToRename">
       <span class="card-title">
         <span>{{cardName}}</span>

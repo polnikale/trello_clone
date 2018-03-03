@@ -8,10 +8,14 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     user: null,
+    error: null,
   },
   mutations: {
     setUser(state, payload) {
       state.user = payload;
+    },
+    setError(state, payload) {
+      state.error = payload;
     },
   },
   actions: {
@@ -44,6 +48,7 @@ export default new Vuex.Store({
         })
         .catch((error) => {
           console.log(error);
+          commit('setError', error);
         });
     },
     signUserIn({ commit }, payload) {
@@ -55,6 +60,7 @@ export default new Vuex.Store({
           });
         })
         .catch((error) => {
+          commit('setError', error);
           console.log(error);
         });
     },
@@ -65,6 +71,9 @@ export default new Vuex.Store({
     },
     getUser(state) {
       return state.user;
+    },
+    getError(state) {
+      return state.error;
     },
   },
 });

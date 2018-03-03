@@ -9,7 +9,13 @@
             <h3>I've worked really alot on this. I really hope you like it. To begin using my app, click the button below!</h3>
           </v-card-title>
           <v-card-actions>
-            <v-btn v-if="userIsAuthorized" to="/deck" class="primary ml-auto">Go to decks!</v-btn>
+            <v-container v-if="userIsAuthorized">
+              <v-layout row >
+                <v-flex style="text-align: right">
+                  <v-btn to="/deck" class="primary ml-auto">Go to decks!</v-btn>
+                </v-flex>
+              </v-layout>
+            </v-container>
             <v-container v-else>
               <v-layout row >
                 <v-flex style="text-align: center">

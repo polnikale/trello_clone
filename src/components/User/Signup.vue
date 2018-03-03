@@ -1,5 +1,10 @@
 <template>
   <v-container>
+    <v-layout row v-if="error">
+      <v-flex xs12 sm6 offset-sm3>
+        <my-alert :text="error.message"></my-alert>
+      </v-flex>
+    </v-layout>
     <v-layout row>
       <v-flex xs12 sm6 offset-sm3>
         <v-card>
@@ -74,7 +79,10 @@ export default {
     },
     user() {
       return this.$store.getters.getUser;
-    }
+    },
+    error() {
+      return this.$store.getters.getError;
+    },
   },
   methods: {
     onSignup() {

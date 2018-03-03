@@ -8,6 +8,7 @@ import store from './store/index';
 import App from './App';
 import router from './router';
 import newCard from './components/Decks/Card';
+import myAlert from './components/Shared/MyAlert';
 
 
 Vue.use(Vuetify, {
@@ -23,6 +24,7 @@ Vue.use(Vuetify, {
 });
 
 Vue.component('new-card', newCard);
+Vue.component('my-alert', myAlert);
 
 Vue.config.productionTip = false;
 
