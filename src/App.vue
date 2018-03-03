@@ -11,11 +11,17 @@
       <v-list dense>
         <v-subheader inset class="subheading">Welcome to my app!</v-subheader>
         <v-divider></v-divider>
-        <v-list-tile class="title" v-for="item in items" :key="item.name" :to="item.link">
+        <v-list-tile class="title" v-for="item in menuItems" :key="item.name" :to="item.link">
           <v-list-tile-action class="mr-2">
             <v-icon>{{item.icon}}</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>{{item.name}}</v-list-tile-content>
+        </v-list-tile>
+        <v-list-tile class="title" @click="onLogout">
+          <v-list-tile-action class="mr-2">
+            <v-icon>exit_to_app</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>Logout</v-list-tile-content>
         </v-list-tile>
       </v-list>
     </v-navigation-drawer>
@@ -34,12 +40,18 @@
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-xs-only">
         <v-btn 
-          v-for="item in items" 
+          v-for="item in menuItems" 
           :key="item.name"
           flat
           :to="item.link">
           <v-icon left>{{item.icon}}</v-icon>
           {{item.name}}
+        </v-btn>
+        <v-btn 
+          flat
+          @click="onLogout">
+          <v-icon left>exit_to_app</v-icon>
+          Logout
         </v-btn>
       </v-toolbar-items>
     </v-toolbar>
@@ -51,18 +63,41 @@
 
 <script>
 export default {
+  name: 'App',
   data() {
     return {
-      items: [
-        { icon: 'lock_open', name: 'Sign in', link: '/signin' },
-        { icon: 'exit_to_app', name: 'Sign up', link: '/signup' },
-        { icon: 'dashboard', name: 'Decks', link: '/decks' },
-        { icon: 'account_box', name: 'Profile', link: '/profile' },
-      ],
       showToolbar: false,
     };
   },
-  name: 'App',
+  computed: {
+    userIsAuthorized() {
+      if (this.user !== null && this.user !== undefined) {
+        return true;
+      }
+      return false;
+    },
+    user() {
+      return this.$store.getters.getUser;
+    },
+    menuItems() {
+      let menuItems = [
+        { icon: 'lock_open', name: 'Sign in', link: '/signin' },
+        { icon: 'exit_to_app', name: 'Sign up', link: '/signup' },
+      ];
+      if (this.userIsAuthorized) {
+        menuItems = [
+          { icon: 'dashboard', name: 'Decks', link: '/decks' },
+          { icon: 'account_box', name: 'Profile', link: '/profile' },
+        ];
+      }
+      return menuItems;
+    },
+  },
+  methods: {
+    onLogout() {
+      console.log('lol');
+    }
+  }
 };
 </script>
 
