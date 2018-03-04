@@ -24,25 +24,6 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    updateCard({ commit, getters }, payload) {
-      const deck = payload.deck;
-      const decks = getters.getDecks;
-      const card = payload.card;
-      let neededCard;
-      const neededDeckList = decks[decks.indexOf(deck)].lists;
-      for (let counter = 0; counter <= neededDeckList.length; counter += 1) {
-        if (neededDeckList[counter].cards.indexOf(card) !== -1) {
-          neededCard = neededDeckList[counter].cards[neededDeckList[counter].cards.indexOf(card)];
-          break;
-        }
-      }
-      if (payload.name) {
-        neededCard.name = payload.name;
-      }
-      if (payload.expires) {
-        neededCard.expires = payload.expires;
-      }
-    },
     signUserUp({ commit }, payload) {
       firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
         .then((user) => {
@@ -95,8 +76,8 @@ export default new Vuex.Store({
         description: payload.description,
         date: payload.date.toISOString(),
         groupName: payload.groupName,
+        lists: [''], // this one needs to have atleast some value, because if you set lists: [], it SOMEWHY doesn't create it in DB and is unreachable
       };
-      console.log(deck);
       firebase.database().ref('/decks').push(deck)
         .then((data) => {
           commit('createDeck', {
@@ -107,6 +88,38 @@ export default new Vuex.Store({
         .catch((error) => {
           console.log(error);
         });
+    },
+    updateDeck() {
+
+    },
+    createNewList({ commit }, payload) {
+      firebase.database().ref('/decks/').child(payload.id).child('lists')
+        .push({ name: 'alalal' })
+        .then((data) => {
+          console.log(data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    updateCard({ commit, getters }, payload) {
+      const deck = payload.deck;
+      const decks = getters.getDecks;
+      const card = payload.card;
+      let neededCard;
+      const neededDeckList = decks[decks.indexOf(deck)].lists;
+      for (let counter = 0; counter <= neededDeckList.length; counter += 1) {
+        if (neededDeckList[counter].cards.indexOf(card) !== -1) {
+          neededCard = neededDeckList[counter].cards[neededDeckList[counter].cards.indexOf(card)];
+          break;
+        }
+      }
+      if (payload.name) {
+        neededCard.name = payload.name;
+      }
+      if (payload.expires) {
+        neededCard.expires = payload.expires;
+      }
     },
   },
   getters: {
