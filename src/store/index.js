@@ -73,8 +73,17 @@ export default new Vuex.Store({
         groups: ['Favourite', 'Personal'],
       });
     },
-    fetchUserData({ commit }, payload) {
+    fetchUserData() {
       // it goes later
+    },
+    logoutUser({ commit }, payload) {
+      firebase.auth().signOut()
+        .then((data) => {
+          commit('setUser', null);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   },
   getters: {
@@ -88,7 +97,7 @@ export default new Vuex.Store({
       return state.error;
     },
     getGroups(state) {
-      return state.groups;
+      return state.user.groups;
     },
   },
 });

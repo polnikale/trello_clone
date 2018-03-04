@@ -96,7 +96,7 @@ export default {
   },
   methods: {
     onLogout() {
-      console.log('lol');
+      this.$store.dispatch('logoutUser');
     },
   },
 };
