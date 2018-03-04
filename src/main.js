@@ -44,5 +44,12 @@ new Vue({
       messagingSenderId: '943119875123',
     };
     firebase.initializeApp(config);
+
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.$store.dispatch('autoSignIn', user);
+        this.$store.dispatch('fetchUserData');
+      }
+    });
   },
 });

@@ -12,7 +12,7 @@
             <v-container v-if="userIsAuthorized">
               <v-layout row >
                 <v-flex style="text-align: right">
-                  <v-btn to="/deck" class="primary ml-auto">Go to decks!</v-btn>
+                  <v-btn to="/decks" class="primary ml-auto">Go to decks!</v-btn>
                 </v-flex>
               </v-layout>
             </v-container>

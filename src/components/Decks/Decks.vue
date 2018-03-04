@@ -73,15 +73,6 @@
 export default {
   data() {
     return {
-      decks: [
-        { name: 'My first trello app!', description: 'This is just for managing my trello app!', groupName: ['Personal'], id: 'smmeseefsesbb' },
-        { name: 'My first trello app!', description: 'This is just for managing my trello app!', groupName: ['Personal'], id: 'smmesesesbb' },
-        { name: 'My app!', description: 'This is just for managing my trello app!', groupName: ['Personal'], id: 'smesesesbb' },
-        { name: 'My second trello app!', description: 'This is just for managing my trello app!', groupName: ['Favourite'], id: 'smmejytbngsbb' },
-        { name: 'My third trello app!', description: 'This is just for managing my trello app!', groupName: ['Personal', 'Favourite'], id: 'smdeawsvvxcfsesbb' },
-        { name: 'My fourth trello app!', description: 'This is just for managing my trello app!', groupName: ['Specific'], id: 'smmewtrkuesbb' },
-      ],
-      groups: ['Favourite', 'Personal', 'Specific'],
       newDeckName: 'Create new deck!',
       openInput: false,
       newDescription: '',
@@ -96,6 +87,9 @@ export default {
     },
     decks() {
       return this.$store.getters.getDecks;
+    },
+    groups() {
+      return this.$store.getters.getGroups;
     },
   },
   methods: {

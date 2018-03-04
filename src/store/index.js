@@ -44,6 +44,7 @@ export default new Vuex.Store({
           commit('setUser', {
             id: user.uid,
             decks: [],
+            groups: ['Favourite', 'Personal'],
           });
         })
         .catch((error) => {
@@ -57,6 +58,7 @@ export default new Vuex.Store({
           commit('setUser', {
             id: user.uid,
             decks: [],
+            groups: ['Favourite', 'Personal'],
           });
         })
         .catch((error) => {
@@ -64,6 +66,16 @@ export default new Vuex.Store({
           console.log(error);
         });
     },
+    autoSignIn({ commit }, payload) {
+      commit('setUser', {
+        id: payload.uid, 
+        decks: [],
+        groups: ['Favourite', 'Personal'],
+      });
+    },
+    fetchUserData({ commit }, payload) {
+      // it goes later
+    }
   },
   getters: {
     getDecks(state) {
@@ -74,6 +86,9 @@ export default new Vuex.Store({
     },
     getError(state) {
       return state.error;
+    },
+    getGroups(state) {
+      return state.groups;
     },
   },
 });

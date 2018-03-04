@@ -97,8 +97,8 @@ export default {
   methods: {
     onLogout() {
       console.log('lol');
-    }
-  }
+    },
+  },
 };
 </script>
 
