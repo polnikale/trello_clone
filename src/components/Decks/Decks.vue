@@ -105,11 +105,11 @@ export default {
       return found;
     },
     createNewDeck() {
-      this.decks.push({
+      this.$store.dispatch('createNewDeck', {
         name: this.newDeckName,
         description: this.newDescription,
+        date: new Date(),
         groupName: ['Personal'],
-        id: +new Date() + this.newDeckName,
       });
       this.newDeckName = 'Create your deck!';
       this.newDescription = '';

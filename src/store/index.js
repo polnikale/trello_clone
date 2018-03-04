@@ -8,6 +8,8 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     user: null,
+    decks: [],
+    groups: ['Personal', 'Favourite'],
     error: null,
   },
   mutations: {
@@ -16,6 +18,9 @@ export default new Vuex.Store({
     },
     setError(state, payload) {
       state.error = payload;
+    },
+    createDeck(state, payload) {
+      state.decks.push(payload);
     },
   },
   actions: {
@@ -44,7 +49,6 @@ export default new Vuex.Store({
           commit('setUser', {
             id: user.uid,
             decks: [],
-            groups: ['Favourite', 'Personal'],
           });
         })
         .catch((error) => {
@@ -58,7 +62,6 @@ export default new Vuex.Store({
           commit('setUser', {
             id: user.uid,
             decks: [],
-            groups: ['Favourite', 'Personal'],
           });
         })
         .catch((error) => {
@@ -68,27 +71,47 @@ export default new Vuex.Store({
     },
     autoSignIn({ commit }, payload) {
       commit('setUser', {
-        id: payload.uid, 
+        id: payload.uid,
         decks: [],
-        groups: ['Favourite', 'Personal'],
       });
     },
     fetchUserData() {
       // it goes later
     },
-    logoutUser({ commit }, payload) {
+    logoutUser({ commit }) {
       firebase.auth().signOut()
-        .then((data) => {
+        .then(() => {
           commit('setUser', null);
         })
         .catch((err) => {
           console.log(err);
         });
-    }
+    },
+
+
+    createNewDeck({ commit }, payload) {
+      const deck = {
+        name: payload.name,
+        description: payload.description,
+        date: payload.date.toISOString(),
+        groupName: payload.groupName,
+      };
+      console.log(deck);
+      firebase.database().ref('/decks').push(deck)
+        .then((data) => {
+          commit('createDeck', {
+            ...deck,
+            id: data.key,
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
   },
   getters: {
     getDecks(state) {
-      return state.user.decks;
+      return state.decks;
     },
     getUser(state) {
       return state.user;
@@ -97,7 +120,7 @@ export default new Vuex.Store({
       return state.error;
     },
     getGroups(state) {
-      return state.user.groups;
+      return state.groups;
     },
   },
 });
