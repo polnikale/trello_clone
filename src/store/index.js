@@ -9,6 +9,7 @@ export default new Vuex.Store({
   state: {
     user: null,
     decks: [],
+    lists: [],
     groups: ['Personal', 'Favourite'],
     error: null,
   },
@@ -21,6 +22,9 @@ export default new Vuex.Store({
     },
     createDeck(state, payload) {
       state.decks.push(payload);
+    },
+    createList(state, payload) {
+      state.lists.push(payload);
     },
   },
   actions: {
@@ -76,7 +80,6 @@ export default new Vuex.Store({
         description: payload.description,
         date: payload.date.toISOString(),
         groupName: payload.groupName,
-        lists: [''], // this one needs to have atleast some value, because if you set lists: [], it SOMEWHY doesn't create it in DB and is unreachable
       };
       firebase.database().ref('/decks').push(deck)
         .then((data) => {
@@ -93,33 +96,25 @@ export default new Vuex.Store({
 
     },
     createNewList({ commit }, payload) {
-      firebase.database().ref('/decks/').child(payload.id).child('lists')
-        .push({ name: 'alalal' })
+      firebase.database().ref('/lists').push({ name: payload.name, deck: payload.parentId })
         .then((data) => {
-          console.log(data);
+          commit('createList', {
+            ...payload,
+            key: data.key,
+          });
         })
         .catch((error) => {
           console.log(error);
         });
     },
-    updateCard({ commit, getters }, payload) {
-      const deck = payload.deck;
-      const decks = getters.getDecks;
-      const card = payload.card;
-      let neededCard;
-      const neededDeckList = decks[decks.indexOf(deck)].lists;
-      for (let counter = 0; counter <= neededDeckList.length; counter += 1) {
-        if (neededDeckList[counter].cards.indexOf(card) !== -1) {
-          neededCard = neededDeckList[counter].cards[neededDeckList[counter].cards.indexOf(card)];
-          break;
-        }
-      }
-      if (payload.name) {
-        neededCard.name = payload.name;
-      }
-      if (payload.expires) {
-        neededCard.expires = payload.expires;
-      }
+    updateList() {
+
+    },
+    createNewCard() {
+
+    },
+    updateCard() {
+    
     },
   },
   getters: {
@@ -134,6 +129,9 @@ export default new Vuex.Store({
     },
     getGroups(state) {
       return state.groups;
+    },
+    getLists(state) {
+      return state.lists;
     },
   },
 });

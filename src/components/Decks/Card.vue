@@ -22,26 +22,18 @@
 
 <script>
 export default {
-  props: ['card', 'deck'],
-  data() {
-    return {
-      cardName: this.card.name,
-      cardExpires: this.card.expires,
-      cardShowInputToRename: this.card.showInputToRename,
-    };
+  props: ['list'],
+  computed: {
+    cards() {
+      
+    }
   },
   methods: {
     showRenameCard() {
       this.cardShowInputToRename = true;
     },
     confirmRenameCard() {
-      this.$store.dispatch('updateCard', {
-        name: this.cardName,
-        expires: this.cardExpires,
-        card: this.card,
-        deck: this.deck,
-      });
-      this.cardShowInputToRename = false;
+      
     },
   },
   computed: {
