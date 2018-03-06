@@ -87,7 +87,7 @@ export default {
   },
   methods: {
     createNewList() {
-      this.$store.dispatch('createNewList', { name: this.newListName, parentId: this.deck.id, deck: this.deck });
+      this.$store.dispatch('createNewList', { name: this.newListName, parentId: this.deck.id, });
       this.newListName = 'Your list name!';
       this.openListInput = false;
     },

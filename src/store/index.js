@@ -27,6 +27,9 @@ export default new Vuex.Store({
     createList(state, payload) {
       state.lists.push(payload);
     },
+    createCard(state, payload) {
+      state.cards.push(payload);
+    },
   },
   actions: {
     signUserUp({ commit }, payload) {
@@ -97,11 +100,11 @@ export default new Vuex.Store({
 
     },
     createNewList({ commit }, payload) {
-      firebase.database().ref('/lists').push({ name: payload.name, deck: payload.parentId })
+      firebase.database().ref('/lists').push(payload)
         .then((data) => {
           commit('createList', {
             ...payload,
-            key: data.key,
+            id: data.key,
           });
         })
         .catch((error) => {
@@ -111,8 +114,17 @@ export default new Vuex.Store({
     updateList() {
 
     },
-    createNewCard() {
-
+    createNewCard({ commit }, payload) {
+      firebase.database().ref('/cards').push(payload)
+        .then((data) => {
+          commit('createCard', {
+            ...payload,
+            key: data.key,
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
     updateCard() {
     },

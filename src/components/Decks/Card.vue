@@ -1,9 +1,9 @@
 <template>
-  <v-flex xs12 sm6 offset-sm3>
-    <div class="card-in-list" v-if="!cardShowInputToRename">
+  <v-flex>
+    <div class="card-in-list" v-if="!openCardRenameInput">
       <span class="card-title">
         <span>{{cardName}}</span>
-        <v-icon style="font-size: 14px" @click="showRenameCard">create</v-icon>
+        <v-icon style="font-size: 14px" @click="openCardRenameInput = true">create</v-icon>
       </span>
       <span v-show="cardExpires" :style="{color: showGreenOrRed}">{{cardExpires}}</span>
     </div>
@@ -22,7 +22,14 @@
 
 <script>
 export default {
-  props: ['list'],
+  props: ['list', 'card'],
+  data() {
+    return {
+      openCardRenameInput: false,
+      cardName: this.card.name,
+      cardExpires: this.card.expires,
+    };
+  },
   computed: {
     cards() {
       const cards = this.$store.getters.getCards;
@@ -36,9 +43,6 @@ export default {
     },
   },
   methods: {
-    showRenameCard() {
-      this.cardShowInputToRename = true;
-    },
     confirmRenameCard() {
       
     },
