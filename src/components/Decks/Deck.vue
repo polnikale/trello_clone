@@ -7,7 +7,7 @@
             <h2 style="color: #fff" class="mb-1">{{deck.name}} |<span v-for="group in deck.groupName" :key="group"> {{group}} |</span> {{deck.type}}</h2>
           </v-layout>
           <div style="display: flex">
-            <new-list v-if="deck" :deck="deck"></new-list>
+            <new-list style="width: 320px; flex-shrink: 0;" v-if="list != ''" v-for="(list,index) in lists" :key="index" :list="list" :deck="deck"></new-list>
             <div style="width: 320px; flex-shrink: 0;">
               <v-btn 
                 xl3 lg4 sm6 xs12 
@@ -55,7 +55,6 @@ export default {
     return {
       decks: '',
       openListInput: false,
-      openCardInput: false,
       newListName: 'Your list name!',
     };
   },
@@ -68,6 +67,16 @@ export default {
         }
       }
       return false;
+    },
+    lists() {
+      const thisDeckLists = [];
+      const lists = this.$store.getters.getLists;
+      for (let counter = 0; counter < lists.length; counter++) {
+        if (lists[counter].parentId === this.deck.id) {
+          thisDeckLists.push(lists[counter]);
+        }
+      }
+      return thisDeckLists;
     },
     formIsValid() {
       if (!this.newListName) {
