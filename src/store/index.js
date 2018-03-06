@@ -10,6 +10,7 @@ export default new Vuex.Store({
     user: null,
     decks: [],
     lists: [],
+    cards: [],
     groups: ['Personal', 'Favourite'],
     error: null,
   },
@@ -114,7 +115,6 @@ export default new Vuex.Store({
 
     },
     updateCard() {
-    
     },
   },
   getters: {
@@ -132,6 +132,9 @@ export default new Vuex.Store({
     },
     getLists(state) {
       return state.lists;
+    },
+    getCards(state) {
+      return state.cards;
     },
   },
 });

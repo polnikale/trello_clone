@@ -25,8 +25,15 @@ export default {
   props: ['list'],
   computed: {
     cards() {
-      
-    }
+      const cards = this.$store.getters.getCards;
+      const thisListCards = [];
+      for (cardCounter = 0; cardCounter < cards.length; cardCounter++) {
+        if (cards[cardCounter].parentId === this.list.id) {
+          thisListCards.push(cards[cardCounter]);
+        }
+      }
+      return thisListCards;
+    },
   },
   methods: {
     showRenameCard() {

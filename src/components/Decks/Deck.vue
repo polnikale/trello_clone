@@ -1,33 +1,21 @@
 <template>
-  <v-container class="primary" light fluid style="min-height: 100%">
+  <v-container class="primary deck-main" light fluid style="min-height: 100%"> <!-- dont' change deck-main!!!!! -->
     <v-layout row>
       <v-flex xs12>
         <v-container>
           <v-layout row>
             <h2 style="color: #fff" class="mb-1">{{deck.name}} |<span v-for="group in deck.groupName" :key="group"> {{group}} |</span> {{deck.type}}</h2>
           </v-layout>
-          <v-layout row>
-            <div style="width: 320px" v-if="list != ''" v-for="(list,index) in lists" :key="index">
-              <v-card light style="min-height: 90px; width: 90%;background-color:rgba(220, 220, 220, .9)" round>
-                <v-card-title style="font-weight: 600">
-                  {{list.name}}
-                </v-card-title>
-                <v-container fluid class="pa-2"> 
-                  <v-layout row v-for="card in list.cards" :key="card.name" >
-                    <new-card :list="list"></new-card> 
-                    <!-- VERY IMPORTANT THING! WE ACTUALLY NEED TO SEPERATE IT TO IT'S OWN COMPONENT TO CREATE OWN SCOPE WITH CARD.PROPERTIES. IN OTHER CASE IT BLOCKS INPUT PRETTY MUCH! -->     
-                  </v-layout>
-                </v-container>
-              </v-card>
-            </div>
-            <div style="width: 320px">
+          <div style="display: flex">
+            <new-list v-if="deck" :deck="deck"></new-list>
+            <div style="width: 320px; flex-shrink: 0;">
               <v-btn 
                 xl3 lg4 sm6 xs12 
                 class="secondary pa-2" 
                 dark 
                 style="min-height: 90px; width: 90%;"
-                @click="openInput = !openInput"
-                v-if="!openInput" >
+                @click="openListInput = true"
+                v-if="!openListInput" >
                 <span>Create new list!</span>
               </v-btn>
               <form v-else class="pa-2 accent" style="border-radius: 5px" dark @submit.prevent="createNewList">
@@ -53,7 +41,7 @@
                 </v-layout>
               </form>
             </div>
-          </v-layout>
+          </div>
         </v-container>
       </v-flex>
     </v-layout>
@@ -66,7 +54,8 @@ export default {
   data() {
     return {
       decks: '',
-      openInput: false,
+      openListInput: false,
+      openCardInput: false,
       newListName: 'Your list name!',
     };
   },
@@ -80,16 +69,6 @@ export default {
       }
       return false;
     },
-    lists() {
-      const thisDeckLists = [];
-      const lists = this.$store.getters.getLists;
-      for (let counter = 0; counter < lists.length; counter++) {
-        if (lists[counter].parentId === this.deck.id) {
-          thisDeckLists.push(lists[counter]);
-        }
-      }
-      return thisDeckLists;
-    },
     formIsValid() {
       if (!this.newListName) {
         return true;
@@ -101,9 +80,18 @@ export default {
     createNewList() {
       this.$store.dispatch('createNewList', { name: this.newListName, parentId: this.deck.id, deck: this.deck });
       this.newListName = 'Your list name!';
-      this.openInput = false;
+      this.openListInput = false;
     },
   },
 };
 </script>
+
+<style>
+.deck-main {
+  background-color: #47CAF9;
+  overflow-x: auto; 
+}
+</style>
+<!-- in case we have on deck component too much lists, it shouldn't shrink and have scroll!!!!!! --> 
+
 

@@ -106,5 +106,8 @@ export default {
 v-list {
   font-size: 2em;
 }
+body {
+  overflow-x: scroll;
+}
 </style>
 
