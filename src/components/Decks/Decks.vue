@@ -135,9 +135,6 @@ export default {
       return true;
     },
   },
-  created() {
-    this.$store.dispatch('loadDeckData');
-  },
 };
 </script>
 

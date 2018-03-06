@@ -7,7 +7,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    user: null,
+    user: {},
     loading: false,
     groups: ['Personal', 'Favourite'],
     error: null,
@@ -43,6 +43,7 @@ export default new Vuex.Store({
   },
   actions: {
     signUserUp({ commit }, payload) {
+      commit('setLoading', true);
       firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
         .then((user) => {
           commit('setUser', {
@@ -51,13 +52,16 @@ export default new Vuex.Store({
             lists: [],
             cards: [],
           });
+          commit('setLoading', false);
         })
         .catch((error) => {
           console.log(error);
+          commit('setLoading', false);
           commit('setError', error);
         });
     },
     signUserIn({ commit }, payload) {
+      commit('setLoading', true);
       firebase.auth().signInWithEmailAndPassword(payload.email, payload.password)
         .then((user) => {
           commit('setUser', {
@@ -66,8 +70,10 @@ export default new Vuex.Store({
             lists: [],
             cards: [],
           });
+          commit('setLoading', false);
         })
         .catch((error) => {
+          commit('setLoading', false);
           commit('setError', error);
           console.log(error);
         });
@@ -93,6 +99,7 @@ export default new Vuex.Store({
         });
     },
     createNewDeck({ commit, getters }, payload) {
+      commit('setLoading', true);
       const deck = {
         name: payload.name,
         description: payload.description,
@@ -106,8 +113,10 @@ export default new Vuex.Store({
             ...deck,
             id: data.key,
           });
+          commit('setLoading', false);
         })
         .catch((error) => {
+          commit('setLoading', false);
           console.log(error);
         });
     },
@@ -115,6 +124,7 @@ export default new Vuex.Store({
 
     },
     createNewList({ commit, getters }, payload) {
+      commit('setLoading', true);
       const list = {
         ...payload,
         creatorId: getters.getUser.id,
@@ -125,8 +135,10 @@ export default new Vuex.Store({
             ...list,
             id: data.key,
           });
+          commit('setLoading', false);
         })
         .catch((error) => {
+          commit('setLoading', false);
           console.log(error);
         });
     },
@@ -134,6 +146,7 @@ export default new Vuex.Store({
 
     },
     createNewCard({ commit, getters }, payload) {
+      commit('setLoading', true);
       const card = {
         ...payload,
         creatorId: getters.getUser.id,
@@ -144,8 +157,10 @@ export default new Vuex.Store({
             ...card,
             id: data.key,
           });
+          commit('setLoading', false);
         })
         .catch((error) => {
+          commit('setLoading', false);
           console.log(error);
         });
     },

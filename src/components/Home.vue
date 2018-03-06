@@ -1,6 +1,16 @@
 <template>
   <v-container>
-    <v-layout row>
+    <v-layout row wrap v-if="loading">
+      <v-flex xs12 class="text-xs-center">
+        <v-progress-circular 
+        indeterminate 
+        color="warning"
+        :width="7"
+        :size="70"
+        v-if="loading"></v-progress-circular>
+      </v-flex>
+    </v-layout>
+    <v-layout v-else row>
       <v-flex xs12 sm6 offset-sm3 class="primary">
         <v-card class="pa-4">
           <v-card-media class="mb-5" src="https://wac-cdn.atlassian.com/dam/jcr:d6a89d75-bad0-46f3-88aa-406542eb6cb5/trello-logo-blue-flat.png?cdnVersion=jp" height="220px"></v-card-media>
@@ -43,6 +53,9 @@ export default {
     },
     user() {
       return this.$store.getters.getUser;
+    },
+    loading() {
+      return this.$store.getters.getLoading;
     },
   },
 
