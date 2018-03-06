@@ -1,6 +1,16 @@
 <template>
   <v-container class="primary deck-main" light fluid style="min-height: 100%"> <!-- dont' change deck-main!!!!! -->
-    <v-layout row>
+    <v-layout row wrap v-if="loading">
+      <v-flex xs12 class="text-xs-center">
+        <v-progress-circular 
+        indeterminate 
+        color="warning"
+        :width="7"
+        :size="70"
+        v-if="loading"></v-progress-circular>
+      </v-flex>
+    </v-layout>
+    <v-layout row v-else>
       <v-flex xs12>
         <v-container>
           <v-layout row>
@@ -83,6 +93,9 @@ export default {
         return true;
       }
       return false;
+    },
+    loading() {
+      return this.$store.getters.getLoading;
     },
   },
   methods: {

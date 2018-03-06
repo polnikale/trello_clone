@@ -34,7 +34,7 @@ export default {
     cards() {
       const cards = this.$store.getters.getCards;
       const thisListCards = [];
-      for (cardCounter = 0; cardCounter < cards.length; cardCounter++) {
+      for (let cardCounter = 0; cardCounter < cards.length; cardCounter += 1) {
         if (cards[cardCounter].parentId === this.list.id) {
           thisListCards.push(cards[cardCounter]);
         }

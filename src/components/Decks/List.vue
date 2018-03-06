@@ -46,9 +46,12 @@ export default {
     };
   },
   computed: {
+    user() {
+      return this.$store.getters.getUser;
+    },
     lists() {
       const thisDeckLists = [];
-      const lists = this.$store.getters.getLists;
+      const lists = this.user.lists;
       for (let counter = 0; counter < lists.length; counter++) {
         if (lists[counter].parentId === this.deck.id) {
           thisDeckLists.push(lists[counter]);
@@ -58,13 +61,12 @@ export default {
     },
     cards() {
       const thisDeckCards = [];
-      const cards = this.$store.getters.getCards;
+      const cards = this.user.cards;
       for (let counter = 0; counter < cards.length; counter++) {
         if (cards[counter].parentId === this.list.id) {
           thisDeckCards.push(cards[counter]);
         }
       }
-      console.log(thisDeckCards);
       return thisDeckCards;
     },
     formIsValid() {
@@ -82,8 +84,7 @@ export default {
           name: this.cardName,
           expires: this.cardExpires,
           parentId: this.list.id,
-        };
-      }
+        };}
       else {
         card = {
           name: this.cardName,
@@ -96,8 +97,8 @@ export default {
       this.openCardInput = false;
       this.cardName = '';
       this.cardExpires = '';
-    }
-  }
+    },
+  },
 };
 </script>
 
