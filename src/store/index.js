@@ -7,7 +7,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    user: {},
+    user: null,
     loading: false,
     groups: ['Personal', 'Favourite'],
     error: null,
@@ -39,6 +39,20 @@ export default new Vuex.Store({
     },
     createCard(state, payload) {
       state.user.cards.push(payload);
+    },
+    updateDeck(state, payload) {
+      const decks = state.user.decks;
+      for (let deck of decks) {
+        if (deck.id === payload.id) {
+          if (payload.name) {
+            deck.name = payload.name;
+          }
+          if (payload.groupName) {
+            deck.groupName = payload.groupName;
+          }
+          break;
+        }
+      }
     },
     updateCard(state, payload) {
       const cards = state.user.cards;
@@ -130,8 +144,24 @@ export default new Vuex.Store({
           console.log(error);
         });
     },
-    updateDeck() {
-
+    updateDeck({ commit }, payload) {
+      commit('setLoading', true);
+      const deck = {};
+      if (payload.groupName) {
+        deck.groupName = payload.groupName;
+      }
+      if (payload.name) {
+        deck.name = payload.name;
+      }
+      firebase.database().ref('/decks' + payload.id).update(deck)
+        .then((data) => {
+          commit('setLoading', false);
+          commit('updateDeck', payload);
+        })
+        .catch((error) => {
+          console.log(error);
+          commit('setLoading', false);
+        });
     },
     createNewList({ commit, getters }, payload) {
       commit('setLoading', true);
@@ -153,7 +183,6 @@ export default new Vuex.Store({
         });
     },
     updateList() {
-
     },
     createNewCard({ commit, getters }, payload) {
       commit('setLoading', true);
