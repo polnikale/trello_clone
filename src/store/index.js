@@ -154,7 +154,7 @@ export default new Vuex.Store({
         deck.name = payload.name;
       }
       firebase.database().ref('/decks' + payload.id).update(deck)
-        .then((data) => {
+        .then(() => {
           commit('setLoading', false);
           commit('updateDeck', payload);
         })
@@ -209,7 +209,7 @@ export default new Vuex.Store({
         name: payload.name,
         expires: payload.expires,
       })
-        .then((data) => {
+        .then(() => {
           commit('setLoading', false);
           commit('updateCard', payload);
         })

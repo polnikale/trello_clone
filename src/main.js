@@ -10,6 +10,7 @@ import router from './router';
 import newCard from './components/Decks/Card';
 import newList from './components/Decks/List';
 import myAlert from './components/Shared/MyAlert';
+import decksRow from './components/Decks/DecksRow';
 
 
 Vue.use(Vuetify, {
@@ -27,6 +28,7 @@ Vue.use(Vuetify, {
 Vue.component('new-card', newCard);
 Vue.component('new-list', newList);
 Vue.component('my-alert', myAlert);
+Vue.component('decks-row', decksRow);
 
 Vue.config.productionTip = false;
 
