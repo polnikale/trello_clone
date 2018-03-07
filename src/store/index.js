@@ -40,6 +40,16 @@ export default new Vuex.Store({
     createCard(state, payload) {
       state.user.cards.push(payload);
     },
+    updateCard(state, payload) {
+      const cards = state.user.cards;
+      for (let card of cards) {
+        if (card.id === payload.id) {
+          card.name = payload.name;
+          card.expires = payload.expires;
+          break;
+        }
+      }
+    },
   },
   actions: {
     signUserUp({ commit }, payload) {
@@ -164,7 +174,20 @@ export default new Vuex.Store({
           console.log(error);
         });
     },
-    updateCard() {
+    updateCard({ commit }, payload) {
+      commit('setLoading', true);
+      firebase.database().ref('/cards/' + payload.id).update({
+        name: payload.name,
+        expires: payload.expires,
+      })
+        .then((data) => {
+          commit('setLoading', false);
+          commit('updateCard', payload);
+        })
+        .catch((error) => {
+          console.log(error);
+          commit('setLoading', false);
+        });
     },
 
     loadData({ commit, getters }) {

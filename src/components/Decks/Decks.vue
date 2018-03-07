@@ -129,6 +129,7 @@ export default {
         date: new Date(),
         groupName: ['Personal'],
       });
+      console.log('lol');
       this.newDeckName = 'Create your deck!';
       this.newDescription = '';
       this.openInput = false;

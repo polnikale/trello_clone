@@ -10,9 +10,10 @@
     <form v-else @submit.prevent="confirmRenameCard">
       <h3>Change your name!</h3>
       <v-text-field v-model="cardName" required></v-text-field>
-      <div v-show="cardExpires">
-        <h3>Change your date!</h3>
-        <v-date-picker v-model="cardExpires" :reactive="true" style="width: 100%"></v-date-picker>
+      <v-btn class="accent" dark v-if="cardExpires === ''" @click="cardExpires = new Date().toISOString().slice(0,10)">Choose date(optionally)</v-btn> <!--2018-02-07-->
+      <div v-else>
+        <v-date-picker v-model="cardExpires" :reactive="true"></v-date-picker>
+        <v-btn class="accent" dark @click="cardExpires = ''">Don't want to choose date</v-btn>
       </div>
       <v-btn type="submit" class="success">Change!</v-btn>
     </form>
@@ -28,6 +29,7 @@ export default {
       openCardRenameInput: false,
       cardName: this.card.name,
       cardExpires: this.card.expires,
+      openDataChangeInput: this.cardExpires === '' ? false : true,
     };
   },
   computed: {
@@ -50,6 +52,11 @@ export default {
   },
   methods: {
     confirmRenameCard() {
+      this.$store.dispatch('updateCard', {
+        name: this.cardName,
+        expires: this.cardExpires,
+        id: this.card.id,
+      });
     },
   },
 };

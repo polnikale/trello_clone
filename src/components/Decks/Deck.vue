@@ -46,7 +46,7 @@
                         class="primary" 
                         flat
                         :disabled="formIsValid"
-                        type="submit">Create meetup</v-btn>
+                        type="submit">Create list</v-btn>
                   </v-flex>
                 </v-layout>
               </form>
