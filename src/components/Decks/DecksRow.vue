@@ -132,7 +132,7 @@ export default {
 .star {
   color: black !important;
   position: absolute;
-  right: 30px;
+  right: 38px;
   cursor: pointer;
   top: 10px;
   z-index: 500;

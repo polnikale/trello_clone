@@ -1,6 +1,7 @@
 import 'vuetify/dist/vuetify.min.css';
 
 import * as firebase from 'firebase';
+import draggable from 'vuedraggable';
 
 import Vuetify from 'vuetify';
 import Vue from 'vue';
@@ -29,6 +30,7 @@ Vue.component('new-card', newCard);
 Vue.component('new-list', newList);
 Vue.component('my-alert', myAlert);
 Vue.component('decks-row', decksRow);
+Vue.component('draggable', draggable);
 
 Vue.config.productionTip = false;
 

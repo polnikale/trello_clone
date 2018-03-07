@@ -5,9 +5,11 @@
         {{list.name}}
       </v-card-title>
       <v-container fluid class="pa-2"> 
-        <v-layout row v-for="card in cards" :key="card.name" >
-          <new-card style="width: 90%" :list="list" :card="card"></new-card> 
-        </v-layout>
+        <draggable>
+          <v-layout row v-for="card in cards" :key="card.name">
+              <new-card style="width: 90%" :list="list" :card="card"></new-card> 
+          </v-layout>
+        </draggable>
         <v-layout row>
           <v-btn 
             xl3 lg4 sm6 xs12 
