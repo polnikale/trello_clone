@@ -41,18 +41,15 @@ export default {
       }
       return thisListCards;
     },
-  },
-  methods: {
-    confirmRenameCard() {
-      
-    },
-  },
-  computed: {
     showGreenOrRed() {
       if (new Date() - new Date(this.cardExpires) < 0) {
         return 'green';
       }
       return 'red';
+    },
+  },
+  methods: {
+    confirmRenameCard() {
     },
   },
 };

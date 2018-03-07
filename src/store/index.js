@@ -171,44 +171,44 @@ export default new Vuex.Store({
       commit('setLoading', true);
       firebase.database().ref('/decks').once('value')
         .then((data) => {
-          let decks = data.val();
-          let decksCreated = [];
-          for (let key in decks) {
+          const decks = data.val();
+          const decksCreated = [];
+          for (const key in decks) {
             if (decks[key].creatorId === getters.getUser.id) {
               const neededData = {
                 ...decks[key],
                 id: key,
               };
               decksCreated.push(neededData);
-            } 
+            }
           }
           commit('setDecks', decksCreated);
           firebase.database().ref('/lists').once('value')
             .then((data1) => {
-              let lists = data1.val();
-              let listsCreated = [];
-              for (let key in lists) {
+              const lists = data1.val();
+              const listsCreated = [];
+              for (const key in lists) {
                 if (lists[key].creatorId === getters.getUser.id) {
                   const neededData = {
                     ...lists[key],
                     id: key,
                   };
                   listsCreated.push(neededData);
-                } 
+                }
               }
               commit('setLists', listsCreated);
               firebase.database().ref('/cards').once('value')
-                .then((data) => {
-                  let cards = data.val();
-                  let cardsCreated = [];
-                  for (let key in cards) {
+                .then((data2) => {
+                  const cards = data2.val();
+                  const cardsCreated = [];
+                  for (const key in cards) {
                     if (cards[key].creatorId === getters.getUser.id) {
                       const neededData = {
                         ...cards[key],
                         id: key,
                       };
                       cardsCreated.push(neededData);
-                    } 
+                    }
                   }
                   commit('setCards', cardsCreated);
                   commit('setLoading', false);
@@ -228,7 +228,7 @@ export default new Vuex.Store({
     //       for (let key in lists) {
     //         if (lists[key].creatorId === getters.getUser.id) {
     //           listsCreated.push(lists[key]);
-    //         } 
+    //         }
     //       }
     //       commit('setLists', listsCreated);
     //     })
@@ -248,7 +248,7 @@ export default new Vuex.Store({
     //             id: key,
     //           };
     //           cardsCreated.push(neededData);
-    //         } 
+    //         }
     //       }
     //       commit('setCards', cardsCreated);
     //     })

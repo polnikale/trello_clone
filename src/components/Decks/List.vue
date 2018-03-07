@@ -52,7 +52,7 @@ export default {
     lists() {
       const thisDeckLists = [];
       const lists = this.user.lists;
-      for (let counter = 0; counter < lists.length; counter++) {
+      for (let counter = 0; counter < lists.length; counter += 1) {
         if (lists[counter].parentId === this.deck.id) {
           thisDeckLists.push(lists[counter]);
         }
@@ -62,7 +62,7 @@ export default {
     cards() {
       const thisDeckCards = [];
       const cards = this.user.cards;
-      for (let counter = 0; counter < cards.length; counter++) {
+      for (let counter = 0; counter < cards.length; counter += 1) {
         if (cards[counter].parentId === this.list.id) {
           thisDeckCards.push(cards[counter]);
         }
@@ -84,8 +84,8 @@ export default {
           name: this.cardName,
           expires: this.cardExpires,
           parentId: this.list.id,
-        };}
-      else {
+        };
+      } else {
         card = {
           name: this.cardName,
           expires: '',

@@ -81,7 +81,7 @@ export default {
     lists() {
       const thisDeckLists = [];
       const lists = this.$store.getters.getLists;
-      for (let counter = 0; counter < lists.length; counter++) {
+      for (let counter = 0; counter < lists.length; counter += 1) {
         if (lists[counter].parentId === this.deck.id) {
           thisDeckLists.push(lists[counter]);
         }
@@ -100,7 +100,7 @@ export default {
   },
   methods: {
     createNewList() {
-      this.$store.dispatch('createNewList', { name: this.newListName, parentId: this.deck.id, });
+      this.$store.dispatch('createNewList', { name: this.newListName, parentId: this.deck.id });
       this.newListName = 'Your list name!';
       this.openListInput = false;
     },
