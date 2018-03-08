@@ -9,7 +9,6 @@ export default new Vuex.Store({
   state: {
     user: null,
     loading: false,
-    groups: ['Personal', 'Favourite'],
     error: null,
   },
   mutations: {
@@ -30,6 +29,9 @@ export default new Vuex.Store({
     },
     setCards(state, payload) {
       state.user.cards = payload;
+    },
+    setGroups(state, payload) {
+      state.user.groups = payload;
     },
     createDeck(state, payload) {
       state.user.decks.push(payload);
@@ -68,18 +70,26 @@ export default new Vuex.Store({
   actions: {
     signUserUp({ commit }, payload) {
       commit('setLoading', true);
+      let uid;
       firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
         .then((user) => {
-          commit('setUser', {
-            id: user.uid,
-            decks: [],
-            lists: [],
-            cards: [],
-          });
-          commit('setLoading', false);
-        })
+          uid = user.uid;
+          firebase.database().ref('/groups').push({
+            creatorId: uid,
+            groups: ['Favourite', 'Personal'],
+          })})
+          .then(() => {
+            console.log(uid);
+            commit('setUser', {
+              id: uid,
+              decks: [],
+              lists: [],
+              cards: [],
+              groups: ['Favourite', 'Personal'],
+            });
+            commit('setLoading', false);
+          })
         .catch((error) => {
-          console.log(error);
           commit('setLoading', false);
           commit('setError', error);
         });
@@ -93,6 +103,7 @@ export default new Vuex.Store({
             decks: [],
             lists: [],
             cards: [],
+            groups: ['Favourite', 'Personal'],
           });
           commit('setLoading', false);
         })
@@ -108,6 +119,7 @@ export default new Vuex.Store({
         decks: [],
         lists: [],
         cards: [],
+        groups: ['Favourite', 'Personal'],
       });
     },
     fetchUserData() {
@@ -221,51 +233,64 @@ export default new Vuex.Store({
 
     loadData({ commit, getters }) {
       commit('setLoading', true);
-      firebase.database().ref('/decks').once('value')
+      firebase.database().ref('/groups').once('value')
         .then((data) => {
-          const decks = data.val();
-          const decksCreated = [];
-          for (const key in decks) {
-            if (decks[key].creatorId === getters.getUser.id) {
-              const neededData = {
-                ...decks[key],
-                id: key,
-              };
-              decksCreated.push(neededData);
+          const groups = data.val();
+          const groupsCreated = [];
+          for (const key in groups) {
+            if (groups[key].creatorId === getters.getUser.id) {
+              const neededData = groups[key].groups;
+              groupsCreated.push(...neededData);
+              break;
             }
           }
-          commit('setDecks', decksCreated);
-          firebase.database().ref('/lists').once('value')
-            .then((data1) => {
-              const lists = data1.val();
-              const listsCreated = [];
-              for (const key in lists) {
-                if (lists[key].creatorId === getters.getUser.id) {
+          commit('setGroups', groupsCreated);
+          firebase.database().ref('/decks').once('value')
+            .then((data) => {
+              const decks = data.val();
+              const decksCreated = [];
+              for (const key in decks) {
+                if (decks[key].creatorId === getters.getUser.id) {
                   const neededData = {
-                    ...lists[key],
+                    ...decks[key],
                     id: key,
                   };
-                  listsCreated.push(neededData);
+                  decksCreated.push(neededData);
                 }
               }
-              commit('setLists', listsCreated);
-              firebase.database().ref('/cards').once('value')
-                .then((data2) => {
-                  const cards = data2.val();
-                  const cardsCreated = [];
-                  for (const key in cards) {
-                    if (cards[key].creatorId === getters.getUser.id) {
+              commit('setDecks', decksCreated);
+              firebase.database().ref('/lists').once('value')
+                .then((data1) => {
+                  const lists = data1.val();
+                  const listsCreated = [];
+                  for (const key in lists) {
+                    if (lists[key].creatorId === getters.getUser.id) {
                       const neededData = {
-                        ...cards[key],
+                        ...lists[key],
                         id: key,
                       };
-                      cardsCreated.push(neededData);
+                      listsCreated.push(neededData);
                     }
                   }
-                  commit('setCards', cardsCreated);
-                  commit('setLoading', false);
+                  commit('setLists', listsCreated);
+                  firebase.database().ref('/cards').once('value')
+                    .then((data2) => {
+                      const cards = data2.val();
+                      const cardsCreated = [];
+                      for (const key in cards) {
+                        if (cards[key].creatorId === getters.getUser.id) {
+                          const neededData = {
+                            ...cards[key],
+                            id: key,
+                          };
+                          cardsCreated.push(neededData);
+                        }
+                      }
+                      commit('setCards', cardsCreated);
+                      commit('setLoading', false);
+                    });
                 });
-            });
+            })
         })
         .catch((err) => {
           commit('setLoading', false);
@@ -320,7 +345,7 @@ export default new Vuex.Store({
       return state.error;
     },
     getGroups(state) {
-      return state.groups;
+      return state.user.groups;
     },
     getLists(state) {
       return state.user.lists;
