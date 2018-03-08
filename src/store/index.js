@@ -42,6 +42,9 @@ export default new Vuex.Store({
     createCard(state, payload) {
       state.user.cards.push(payload);
     },
+    createGroup(state, payload) {
+      state.user.groups.groups.push(payload);
+    },
     updateDeck(state, payload) {
       const decks = state.user.decks;
       for (let deck of decks) {
@@ -78,14 +81,13 @@ export default new Vuex.Store({
             creatorId: uid,
             groups: ['Favourite', 'Personal'],
           })})
-          .then(() => {
-            console.log(uid);
+          .then((data) => {
             commit('setUser', {
               id: uid,
               decks: [],
               lists: [],
               cards: [],
-              groups: ['Favourite', 'Personal'],
+              groups: {id: data.key, groups: ['Favourite', 'Personal']},
             });
             commit('setLoading', false);
           })
@@ -103,7 +105,7 @@ export default new Vuex.Store({
             decks: [],
             lists: [],
             cards: [],
-            groups: ['Favourite', 'Personal'],
+            groups: {},
           });
           commit('setLoading', false);
         })
@@ -119,7 +121,7 @@ export default new Vuex.Store({
         decks: [],
         lists: [],
         cards: [],
-        groups: ['Favourite', 'Personal'],
+        groups: {},
       });
     },
     fetchUserData() {
@@ -231,17 +233,33 @@ export default new Vuex.Store({
         });
     },
 
+    createNewGroup({ commit, getters }, payload) {
+      commit('setLoading', true);
+      firebase.database().ref('/groups/').child(getters.getGroups.id).update({
+        groups: [...getters.getGroups.groups, payload.name],
+      })
+        .then(() => {
+          commit('createGroup', payload.name);
+          commit('setLoading', false);
+        })
+        .catch((error) => {
+          commit('setLoading', false);
+          console.log(error);
+        });
+    },
     loadData({ commit, getters }) {
       commit('setLoading', true);
       firebase.database().ref('/groups').once('value')
         .then((data) => {
           const groups = data.val();
-          const groupsCreated = [];
+          let groupsCreated = {};
           for (const key in groups) {
             if (groups[key].creatorId === getters.getUser.id) {
-              const neededData = groups[key].groups;
-              groupsCreated.push(...neededData);
-              break;
+              const neededData = {
+                id: key,
+                groups: groups[key].groups,
+              };
+              groupsCreated = neededData;
             }
           }
           commit('setGroups', groupsCreated);
@@ -345,7 +363,7 @@ export default new Vuex.Store({
       return state.error;
     },
     getGroups(state) {
-      return state.user.groups;
+      return state.user.groups; // returns an object
     },
     getLists(state) {
       return state.user.lists;

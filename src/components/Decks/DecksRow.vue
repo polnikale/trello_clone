@@ -104,9 +104,8 @@ export default {
         name: this.newDeckName,
         description: this.newDescription,
         date: new Date(),
-        groupName: ['Personal'],
+        groupName: [this.group],
       });
-      console.log('lol');
       this.newDeckName = 'Create your deck!';
       this.newDescription = '';
       this.openInput = false;
