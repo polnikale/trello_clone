@@ -5,10 +5,12 @@
         {{list.name}}
       </v-card-title>
       <v-container fluid class="pa-2"> 
-        <draggable>
-          <v-layout row v-for="card in cards" :key="card.name">
-              <new-card style="width: 90%" :list="list" :card="card"></new-card> 
-          </v-layout>
+        <draggable class="draggable" @end="onMove"> 
+          <transition-group type="transition" class="list-group" :name="'flip-list'"> 
+            <v-layout row v-for="card in cards" :key="card.name">
+                <new-card style="width: 90%" :list="list" :card="card"></new-card> 
+            </v-layout>
+          </transition-group>
         </draggable>
         <v-layout row>
           <v-btn 
@@ -100,7 +102,37 @@ export default {
       this.cardName = '';
       this.cardExpires = '';
     },
+    onMove(event) {
+      console.log(event);
+    }
   },
 };
 </script>
+
+<style scoped>
+.flip-list-move {
+  transition: transform 0.5s !important;
+}
+.no-move {
+  transition: transform 0s;
+}
+
+.ghost {
+  opacity: .5;
+  background: #C8EBFB;
+}
+
+.list-group {
+  min-height: 20px;
+}
+
+.list-group-item {
+  cursor: move;
+}
+
+.list-group-item i{
+  cursor: pointer;
+}
+</style>
+
 
